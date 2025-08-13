@@ -1,0 +1,37 @@
+# Executáveis e binários
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Arquivos de teste gerados
+*.test
+
+# Diretório de build padrão do Go
+/bin/
+/build/
+
+# Cache do Go
+*.out
+*.log
+*.prof
+*.pprof
+
+# Módulos e dependências locais
+vendor/
+
+# IDEs e editores
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# MacOS
+.DS_Store
+
+# Linux
+*~
+
+# Arquivos temporários
+tmp/
