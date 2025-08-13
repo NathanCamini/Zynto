@@ -1,7 +1,7 @@
 # Instalação
 
 Clone o repositório
-git clone [https://github.com/usuario/nome-do-projeto.git](https://github.com/NathanCamini/Zynto.git)
+git clone https://github.com/NathanCamini/Zynto.git
 
 Entre na pasta do projeto
 cd nome-do-projeto
