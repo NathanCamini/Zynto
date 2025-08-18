@@ -1,7 +1,7 @@
 package models
 
 import (
-	enums "Zynto/internal/employees/models/enums"
+	"Zynto/internal/employees/models/enums"
 	"time"
 )
 

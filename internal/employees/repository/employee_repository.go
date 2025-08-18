@@ -25,6 +25,7 @@ func (r *employeeRepoMemory) CreateEmployee(employee *models.Employee) (*models.
 	if employee == nil || employee.ID == "" {
 		return nil, errors.New("invalid employee")
 	}
+
 	r.data[employee.ID] = employee
 	return employee, nil
 }
@@ -77,6 +78,5 @@ func (r *employeeRepoMemory) DeleteEmployee(id string) error {
 	}
 
 	delete(r.data, id)
-
 	return nil
 }
