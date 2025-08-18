@@ -7,7 +7,6 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi"
-	"github.com/go-chi/chi/middleware"
 )
 
 type EmployeesController struct {
@@ -18,13 +17,7 @@ func NewEmployeesController(employeeService models.EmployeeService) *EmployeesCo
 	return &EmployeesController{employeeService: employeeService}
 }
 
-func (e *EmployeesController) RegisterRoutes() http.Handler {
-	r := chi.NewMux()
-
-	r.Use(middleware.Recoverer)
-	r.Use(middleware.RequestID)
-	r.Use(middleware.Logger)
-
+func (e *EmployeesController) RegisterRoutes(r chi.Router) {
 	r.Route("/employees", func(r chi.Router) {
 		r.Post("/", e.createEmployee())
 		r.Get("/", e.getAllEmployees())
@@ -32,8 +25,6 @@ func (e *EmployeesController) RegisterRoutes() http.Handler {
 		r.Put("/{userID}", e.updateEmployee())
 		r.Delete("/{userID}", e.deleteUser())
 	})
-
-	return r
 }
 
 func (e *EmployeesController) createEmployee() http.HandlerFunc {
@@ -47,7 +38,7 @@ func (e *EmployeesController) createEmployee() http.HandlerFunc {
 
 		createdEmployee, err := e.employeeService.CreateEmployee(&employee)
 		if err != nil {
-			utils.SendJson(w, utils.Response{Error: "errrororr"}, http.StatusBadRequest)
+			utils.SendJson(w, utils.Response{Error: err.Error()}, http.StatusBadRequest)
 			return
 		}
 

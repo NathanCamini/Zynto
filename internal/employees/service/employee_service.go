@@ -8,8 +8,6 @@ import (
 	"github.com/google/uuid"
 )
 
-// Aqui devo criar o UUID e depois chamar a função do repository para inserir no BD
-// Deve ter as regras de negocios apenas aqui
 type EmployeeService struct {
 	employeeRepository models.EmployeeRepository
 }
@@ -22,6 +20,12 @@ func (e *EmployeeService) CreateEmployee(employee *models.Employee) (*models.Emp
 	if employee == nil {
 		return nil, errors.New("employee is nil")
 	}
+
+	genderValid := employee.Gender.IsValid()
+	if !genderValid {
+		return nil, errors.New("gender is not valid")
+	}
+
 	employee.ID = uuid.New().String()
 	employee.CreatedAt = time.Now()
 	employee.UpdatedAt = time.Now()
@@ -33,6 +37,7 @@ func (e *EmployeeService) GetEmployee(id string) (*models.Employee, error) {
 	if id == "" {
 		return nil, errors.New("employee ID is empty")
 	}
+
 	employee, err := e.employeeRepository.GetEmployee(id)
 	if err != nil {
 		return nil, err
@@ -69,4 +74,13 @@ func (e *EmployeeService) DeleteEmployee(id string) error {
 	}
 
 	return e.employeeRepository.DeleteEmployee(id)
+}
+
+func (e *EmployeeService) EmployeeIsValid(employeeID string) error {
+	_, err := e.GetEmployee(employeeID)
+	if err != nil {
+		return errors.New("employee does not exist")
+	}
+
+	return nil
 }

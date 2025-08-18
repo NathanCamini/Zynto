@@ -6,4 +6,9 @@ type EmployeeService interface {
 	GetAllEmployees() ([]Employee, error)
 	UpdateEmployee(id string, employee *Employee) error
 	DeleteEmployee(id string) error
+	EmployeeUtils
+}
+
+type EmployeeUtils interface {
+	EmployeeIsValid(employeeID string) error
 }
