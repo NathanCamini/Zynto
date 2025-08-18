@@ -1,11 +1,19 @@
 package main
 
 import (
-	di "Zynto/internal/employees/DI"
+	emp_cont "Zynto/internal/employees/controllers"
+	emp_repo "Zynto/internal/employees/repository"
+	emp_serv "Zynto/internal/employees/service"
+	ser_cont "Zynto/internal/services/controllers"
+	ser_repo "Zynto/internal/services/repository"
+	ser_serv "Zynto/internal/services/service"
 	"fmt"
 	"log/slog"
 	"net/http"
 	"time"
+
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
 )
 
 func main() {
@@ -17,10 +25,21 @@ func main() {
 }
 
 func run() error {
+	handler := chi.NewMux()
+	handler.Use(middleware.Recoverer)
+	handler.Use(middleware.RequestID)
+	handler.Use(middleware.Logger)
 
-	employeesController := di.NewAppEmployeesController()
+	employeeRepo := emp_repo.NewEmployeeRepository()
+	employeeService := emp_serv.NewEmployeeService(employeeRepo)
+	employeesController := emp_cont.NewEmployeesController(employeeService)
 
-	handler := employeesController.RegisterRoutes()
+	serviceRepo := ser_repo.NewServiceRepository()
+	serviceService := ser_serv.NewServiceService(serviceRepo, employeeService)
+	servicesController := ser_cont.NewServicesController(serviceService)
+
+	employeesController.RegisterRoutes(handler)
+	servicesController.RegisterRoutes(handler)
 
 	s := http.Server{
 		ReadTimeout:  10 * time.Second,
