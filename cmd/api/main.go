@@ -1,6 +1,9 @@
 package main
 
 import (
+	cus_cont "Zynto/internal/customers/controllers"
+	cus_repo "Zynto/internal/customers/repository"
+	cus_serv "Zynto/internal/customers/service"
 	emp_cont "Zynto/internal/employees/controllers"
 	emp_repo "Zynto/internal/employees/repository"
 	emp_serv "Zynto/internal/employees/service"
@@ -38,8 +41,13 @@ func run() error {
 	serviceService := ser_serv.NewServiceService(serviceRepo, employeeService)
 	servicesController := ser_cont.NewServicesController(serviceService)
 
+	constumerRepo := cus_repo.NewCustomerRepository()
+	customerService := cus_serv.NewCustomerService(constumerRepo)
+	customersController := cus_cont.NewCustomersController(customerService)
+
 	employeesController.RegisterRoutes(handler)
 	servicesController.RegisterRoutes(handler)
+	customersController.RegisterRoutes(handler)
 
 	s := http.Server{
 		ReadTimeout:  10 * time.Second,

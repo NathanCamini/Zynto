@@ -3,6 +3,7 @@ package service
 import (
 	"Zynto/internal/employees/models"
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/google/uuid"
@@ -33,12 +34,12 @@ func (e *EmployeeService) CreateEmployee(employee *models.Employee) (*models.Emp
 	return e.employeeRepository.CreateEmployee(employee)
 }
 
-func (e *EmployeeService) GetEmployee(id string) (*models.Employee, error) {
+func (e *EmployeeService) GetEmployeeByID(id string) (*models.Employee, error) {
 	if id == "" {
 		return nil, errors.New("employee ID is empty")
 	}
 
-	employee, err := e.employeeRepository.GetEmployee(id)
+	employee, err := e.employeeRepository.GetEmployeeByID(id)
 	if err != nil {
 		return nil, err
 	}
@@ -76,10 +77,12 @@ func (e *EmployeeService) DeleteEmployee(id string) error {
 	return e.employeeRepository.DeleteEmployee(id)
 }
 
-func (e *EmployeeService) EmployeeIsValid(employeeID string) error {
-	_, err := e.GetEmployee(employeeID)
-	if err != nil {
-		return errors.New("employee does not exist")
+func (e *EmployeeService) EmployeeIsValid(employeeID []string) error {
+	for _, employeeID := range employeeID {
+		_, err := e.GetEmployeeByID(employeeID)
+		if err != nil {
+			return fmt.Errorf("failed to get employee %s: %w", employeeID, err)
+		}
 	}
 
 	return nil

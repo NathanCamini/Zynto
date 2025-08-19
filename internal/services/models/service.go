@@ -16,7 +16,7 @@ type Service struct {
 	Duration      int                      `json:"duration"`
 	Category      string                   `json:"category"`
 	CompanyId     string                   `json:"company_id"`
-	EmployeeId    string                   `json:"employee_id"`
+	EmployeeId    []string                 `json:"employee_id"`
 	CreatedAt     time.Time                `json:"created_at"`
 	UpdatedAt     time.Time                `json:"updated_at"`
 }

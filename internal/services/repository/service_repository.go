@@ -30,7 +30,7 @@ func (r *serviceRepoMemory) CreateService(service *models.Service) (*models.Serv
 	return service, nil
 }
 
-func (r *serviceRepoMemory) GetService(id string) (*models.Service, error) {
+func (r *serviceRepoMemory) GetServiceByID(id string) (*models.Service, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 
@@ -76,7 +76,7 @@ func (r *serviceRepoMemory) DeleteService(id string) error {
 	if _, ok := r.data[id]; !ok {
 		return errors.New("service not found")
 	}
-	
+
 	delete(r.data, id)
 	return nil
 }

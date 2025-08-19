@@ -21,7 +21,7 @@ func (s *ServicesController) RegisterRoutes(r chi.Router) {
 	r.Route("/services", func(r chi.Router) {
 		r.Post("/", s.createService())
 		r.Get("/", s.getAllServices())
-		r.Get("/{serviceID}", s.getService())
+		r.Get("/{serviceID}", s.getServiceByID())
 		r.Put("/{serviceID}", s.updateService())
 		r.Delete("/{serviceID}", s.deleteService())
 	})
@@ -46,11 +46,11 @@ func (s *ServicesController) createService() http.HandlerFunc {
 	}
 }
 
-func (s *ServicesController) getService() http.HandlerFunc {
+func (s *ServicesController) getServiceByID() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		serviceID := chi.URLParam(r, "serviceID")
 
-		service, err := s.serviceService.GetService(serviceID)
+		service, err := s.serviceService.GetServiceByID(serviceID)
 		if err != nil {
 			utils.SendJson(w, utils.Response{Error: err.Error()}, http.StatusNotFound)
 			return

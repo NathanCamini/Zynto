@@ -21,7 +21,7 @@ func (e *EmployeesController) RegisterRoutes(r chi.Router) {
 	r.Route("/employees", func(r chi.Router) {
 		r.Post("/", e.createEmployee())
 		r.Get("/", e.getAllEmployees())
-		r.Get("/{userID}", e.getEmployee())
+		r.Get("/{userID}", e.getEmployeeByID())
 		r.Put("/{userID}", e.updateEmployee())
 		r.Delete("/{userID}", e.deleteUser())
 	})
@@ -46,11 +46,11 @@ func (e *EmployeesController) createEmployee() http.HandlerFunc {
 	}
 }
 
-func (e *EmployeesController) getEmployee() http.HandlerFunc {
+func (e *EmployeesController) getEmployeeByID() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		userID := chi.URLParam(r, "userID")
 
-		employee, err := e.employeeService.GetEmployee(userID)
+		employee, err := e.employeeService.GetEmployeeByID(userID)
 		if err != nil {
 			utils.SendJson(w, utils.Response{Error: err.Error()}, http.StatusNotFound)
 			return
