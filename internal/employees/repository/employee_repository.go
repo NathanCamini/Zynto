@@ -30,7 +30,7 @@ func (r *employeeRepoMemory) CreateEmployee(employee *models.Employee) (*models.
 	return employee, nil
 }
 
-func (r *employeeRepoMemory) GetEmployee(id string) (*models.Employee, error) {
+func (r *employeeRepoMemory) GetEmployeeByID(id string) (*models.Employee, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 

@@ -43,12 +43,12 @@ func (s *ServiceService) CreateService(service *models.Service) (*models.Service
 	return s.serviceRepository.CreateService(service)
 }
 
-func (s *ServiceService) GetService(id string) (*models.Service, error) {
+func (s *ServiceService) GetServiceByID(id string) (*models.Service, error) {
 	if id == "" {
 		return nil, errors.New("service ID is empty")
 	}
 
-	service, err := s.serviceRepository.GetService(id)
+	service, err := s.serviceRepository.GetServiceByID(id)
 	if err != nil {
 		return nil, err
 	}
